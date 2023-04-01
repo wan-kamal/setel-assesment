@@ -1,0 +1,58 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: orders-configmap
+  labels:
+    app: orders
+data:
+  OPERATIONS_PORT: "80"
+  MONGODB_URI: mongodb://172.17.0.1:27017
+  REDIS_HOST: localhost
+  KAFKA_URI: broker:9092
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orders
+  labels:
+    app: orders
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orders
+  template:
+    metadata:
+      labels:
+        app: orders
+    spec:
+      containers:
+      - name: redis
+        image: redis:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 6379
+      - name: orders
+        envFrom:
+        - configMapRef:
+            name: orders-configmap
+        image: orders:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orders
+  labels:
+    app: orders
+spec:
+  ports:
+  - name: http
+    port: 80
+  selector:
+    app: orders
+
+
+    

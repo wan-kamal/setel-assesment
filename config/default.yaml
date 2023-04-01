@@ -1,0 +1,21 @@
+service:
+  operations:
+    port: 3000
+    database: operations
+    consumerGroup: orders-updated-consumer
+  payments:
+    port: 3333
+    database: payments
+database:
+  mongo:
+    uri: mongodb://localhost:27017
+    collections:
+      orders: orders
+      payments: payments
+redis:
+  uri: localhost
+kafka:
+  uri: localhost:9092
+  topics:
+    ordersCreated: orders-created
+    ordersUpdated: orders-updated

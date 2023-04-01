@@ -1,0 +1,11 @@
+*
+
+!apps
+!config
+!libs
+!babel.config.json
+!nx.json
+!package.json
+!tsconfig.base.json
+!workspace.json
+!yarn.lock

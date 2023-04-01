@@ -1,0 +1,50 @@
+{
+  "npmScope": "setel-assessment",
+  "affected": {
+    "defaultBase": "master"
+  },
+  "implicitDependencies": {
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    ".eslintrc.json": "*"
+  },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/nx-cloud",
+      "options": {
+        "cacheableOperations": ["build", "lint", "test", "e2e"],
+        "accessToken": "ZjQ5MGRiYjQtZGQzYi00ZWNiLThhMzUtODBjM2FiZjYyYWQ5fHJlYWQtd3JpdGU=",
+        "canTrackAnalytics": false,
+        "showUsageWarnings": true
+      }
+    }
+  },
+  "targetDependencies": {
+    "build": [
+      {
+        "target": "build",
+        "projects": "dependencies"
+      }
+    ]
+  },
+  "projects": {
+    "data-access": {
+      "tags": []
+    },
+    "orders-microservice": {
+      "tags": []
+    },
+    "orders-operations-portal": {
+      "tags": []
+    },
+    "orders-operations-portal-e2e": {
+      "tags": [],
+      "implicitDependencies": ["orders-operations-portal"]
+    },
+    "payment-microservice": {
+      "tags": []
+    }
+  }
+}

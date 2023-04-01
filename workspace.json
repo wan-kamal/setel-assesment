@@ -1,0 +1,253 @@
+{
+  "version": 2,
+  "projects": {
+    "data-access": {
+      "root": "libs/data-access",
+      "sourceRoot": "libs/data-access/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/data-access/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/data-access"],
+          "options": {
+            "jestConfig": "libs/data-access/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "orders-microservice": {
+      "root": "apps/orders-microservice",
+      "sourceRoot": "apps/orders-microservice/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/orders-microservice",
+            "main": "apps/orders-microservice/src/main.ts",
+            "tsConfig": "apps/orders-microservice/tsconfig.app.json",
+            "assets": ["apps/orders-microservice/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/orders-microservice/src/environments/environment.ts",
+                  "with": "apps/orders-microservice/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "orders-microservice:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/orders-microservice/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/orders-microservice"],
+          "options": {
+            "jestConfig": "apps/orders-microservice/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "orders-operations-portal": {
+      "root": "apps/orders-operations-portal",
+      "sourceRoot": "apps/orders-operations-portal/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/web:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/orders-operations-portal",
+            "index": "apps/orders-operations-portal/src/index.html",
+            "main": "apps/orders-operations-portal/src/main.tsx",
+            "polyfills": "apps/orders-operations-portal/src/polyfills.ts",
+            "tsConfig": "apps/orders-operations-portal/tsconfig.app.json",
+            "assets": [
+              "apps/orders-operations-portal/src/favicon.ico",
+              "apps/orders-operations-portal/src/assets"
+            ],
+            "styles": ["apps/orders-operations-portal/src/styles.css"],
+            "scripts": [],
+            "webpackConfig": "@nrwl/react/plugins/webpack"
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/orders-operations-portal/src/environments/environment.ts",
+                  "with": "apps/orders-operations-portal/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/web:dev-server",
+          "options": {
+            "buildTarget": "orders-operations-portal:build",
+            "hmr": true,
+            "proxyConfig": "apps/orders-operations-portal/proxy.conf.json"
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "orders-operations-portal:build:production",
+              "hmr": false
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/orders-operations-portal/**/*.{ts,tsx,js,jsx}"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/orders-operations-portal"],
+          "options": {
+            "jestConfig": "apps/orders-operations-portal/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "orders-operations-portal-e2e": {
+      "root": "apps/orders-operations-portal-e2e",
+      "sourceRoot": "apps/orders-operations-portal-e2e/src",
+      "projectType": "application",
+      "targets": {
+        "e2e": {
+          "executor": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/orders-operations-portal-e2e/cypress.json",
+            "tsConfig": "apps/orders-operations-portal-e2e/tsconfig.e2e.json",
+            "devServerTarget": "orders-operations-portal:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "orders-operations-portal:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/orders-operations-portal-e2e/**/*.{js,ts}"
+            ]
+          }
+        }
+      }
+    },
+    "payment-microservice": {
+      "root": "apps/payment-microservice",
+      "sourceRoot": "apps/payment-microservice/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/payment-microservice",
+            "main": "apps/payment-microservice/src/main.ts",
+            "tsConfig": "apps/payment-microservice/tsconfig.app.json",
+            "assets": ["apps/payment-microservice/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/payment-microservice/src/environments/environment.ts",
+                  "with": "apps/payment-microservice/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "payment-microservice:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/payment-microservice/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/payment-microservice"],
+          "options": {
+            "jestConfig": "apps/payment-microservice/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/react"
+  },
+  "generators": {
+    "@nrwl/react": {
+      "application": {
+        "style": "css",
+        "linter": "eslint",
+        "babel": true
+      },
+      "component": {
+        "style": "css"
+      },
+      "library": {
+        "style": "css",
+        "linter": "eslint"
+      }
+    }
+  },
+  "defaultProject": "orders-operations-portal"
+}

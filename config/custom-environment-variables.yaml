@@ -1,0 +1,21 @@
+service:
+  operations:
+    port: OPERATIONS_PORT
+    database: operations
+    consumerGroup: orders-updated-consumer
+  payments:
+    port: PAYMENTS_PORT
+    database: payments
+database:
+  mongo:
+    uri: MONGODB_URI
+    collections:
+      orders: orders
+      payments: payments
+redis:
+  host: REDIS_HOST
+kafka:
+  uri: KAFKA_URI
+  topics:
+    ordersCreated: orders-created
+    ordersUpdated: orders-updated

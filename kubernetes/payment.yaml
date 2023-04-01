@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: payment-configmap
+  labels:
+    app: payment
+data:
+  PAYMENTS_PORT: "80"
+  MONGODB_URI: mongodb://172.17.0.1:27017
+  KAFKA_URI: broker:9092
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment
+  labels:
+    app: payment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payment
+  template:
+    metadata:
+      labels:
+        app: payment
+    spec:
+      containers:
+      - name: payment
+        envFrom:
+        - configMapRef:
+            name: payment-configmap
+        image: payment:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment
+  labels:
+    app: payment
+spec:
+  ports:
+  - name: http
+    port: 80
+  selector:
+    app: payment
+
+
+    
